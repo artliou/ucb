@@ -1,0 +1,43 @@
+Command Summary:
+
+  clear: 
+        Abandons the current game (if one is in progress), and clears the board to its initial
+      configuration. Playing stops until the next start command.
+  start:
+      Start playing from the current position, if not doing so already (has no effect if cur-
+      rently playing). Takes moves alternately from Black and White.
+  c1r1-c2r2:
+       As indicated in §1.1, indicates a move from c1r1 to c2r2 (e.g., b8-b6.) This com-
+      mand is valid only during play (after start is issued). The first and then every other
+      move is for the Black player, the second and then every other is for White, and the
+      normal legality rules apply to all moves.
+  auto P:
+      Stops the current game until the next start command and causes player P to be
+      played by an automated player (an AI) on subsequent moves. The value P must be
+      “black” or “white” (ignore case—“black” or “BLACK also work). Initially, White is an
+      automated player.
+  manual P:
+      Stops the current game until the next start command and causes player P to
+      take moves from the terminal on subsequent moves. The value of P is as for the auto
+      command. Initially, Black is a manual player.
+  set CR P:
+      Stop any current game. Depending on P, set the contents of square CR (see
+      §1.1). P is either ‘b’, ‘w’, or ‘e’ (for Black, White, or empty) indicating what to place in
+      the given square. When P is b, the next player to move when play resumes (as a result
+      of start) becomes White, and when P is w, the next player to move becomes Black.
+      dump This command is especially for testing and debugging. It prints the board out in exactly
+      the following format:
+
+  seed N: 
+      If your program’s automated players use pseudo-random numbers to choose moves,
+    this command sets the random seed to N (a long integer). It has no effect if there is no
+    random component to your automated players (or if you don’t use automated players
+    them in a particular game). It doesn’t matter exactly how you use N as long as your
+    automated player behaves identically each time it is seeded with N. In the absence of
+    a seed command, do what you want to seed your generator. The idea behind seed is
+    to make it possible to have reproducible results when testing an AI.
+  
+  help:
+    Print a brief summary of the commands.
+  quit:
+    Exits the program.

@@ -1,0 +1,537 @@
+Transcripts and Answers to Questions for Question 2
+
+Transcripts are all copy and pasted from terminal.
+I have deleted spacing between the STk> and the actual response to save space.
+
+Notes: 
+Currently may have bugs with (go direction), but it was definitely working
+before the final version.
+Not sure if sproul-hall-exit is completely working?
+Issues with take-all (sometimes take), menu
+
+
+
+QUESTION 1. List all messages that are sent during this episode.
+
+STk> (ask Arthur 'go 'west)
+
+arthur moved from dorm to soda
+appeared
+
+STk> (ask Arthur 'go north)
+
+arthur moved from soda to kirin
+appeared
+
+STk> (ask Arthur 'take potstickers)
+
+arthur took potstickers
+taken
+
+STk> (ask Arthur 'exits)
+(south)
+
+STk> (ask Arthur 'go 'south)
+
+arthur moved from kirin to soda
+appeared
+
+STk> (ask Arthur 'go 'up)
+
+arthur moved from soda to art-gallery
+appeared
+
+STk> (ask Arthur 'go 'west)
+arthur moved from art-gallery to bh-office
+appeared
+
+(ask Arthur 'lose potstickers)
+lost
+
+(ask Brian 'take potstickers)
+brian took potstickers
+taken
+
+(ask Arthur 'go east) ; Go to art-gallery
+
+"What's your favorite programming language?"
+scheme
+"Good answer, but my favorite is Logo!"
+
+arthur moved from bh-office to art-gallery
+appeared
+ d
+
+STk> (ask Arthur 'go 'down)
+
+arthur moved from art-gallery to soda
+appeared
+
+STk> (ask Arthur 'go 'down)
+arthur moved from soda to 61a-lab
+"The computers seem to be down"
+appeared
+
+QUESTION 2
+a) Brian is a procedure
+#[closure arglist=(message) 2a13074]
+
+b) A Place understands
+type
+neighbors
+exits
+look-in direction
+appear thing
+enter person
+gone thing
+exit person
+new-neighbor direction neighbor
+add-entry-procedure proc
+add-exit-procedure proc
+remove-entry-procedure proc
+remove-exit-procedure proc
+clear-all-procs
+
+c)
+STk> (ask Brian 'place)
+#[closure arglist=(message) 25a180]
+
+STk> (let ((where (ask Brian 'place)))
+       (ask where 'name))
+peoples-park
+
+STk> (ask Peoples-park 'appear bagel)
+*** Error:
+    unbound variable: peoples-park
+Current eval stack:
+__________________
+  0    (ask peoples-park (quote appear) bagel)
+
+Why - Brian returns a closure arglist. His new place is at peoples-park
+The bagel command errors because peoples-park is not the same as Peoples-Park
+
+d) 
+(ask 61a-lab 'appear computer) is the correct implementation
+(ask 61a-lab 'appear 'Durer) ;is incorrect as Durer is only the name of the computer, not an instance.
+(ask 61a-lab 'appear Durer); Durer (variable) is not defined
+
+(computer 'name) will return a procedure, (lambda () name). 
+If ((computer 'name)) were called instead, "Durer" would be returned.
+
+STk> (computer 'name)
+#[closure arglist=() 278310]
+
+
+e) Turn Thing Class into OOP
+f) Whereis and owner procedures
+
+
+TRANSCRIPTS FOR PART 1
+Question A3
+STk> (define ryan (instantiate person 'ryan Pimentel))
+ryan
+STk> (ask ryan 'go-directly-to s-h)
+
+ryan moved from pimentel to sproul-hall
+"Miles and miles of students are waiting in line..."
+#t
+
+STk> (ask ryan 'go 'west)
+*** Error:
+    You can check out any time you'd like, but you can never leave
+STk> (ask ryan 'go 'west)
+*** Error:
+    You can check out any time you'd like, but you can never leave
+STk> (ask ryan 'go 'west)
+*** Error:
+    You can check out any time you'd like, but you can never leave
+
+(ask ryan 'go 'west)
+ryan moved from sproul-hall to sproul-plaza
+
+
+Question A4
+STk> (define singer (instantiate person 'rick sproul-plaza))
+singer
+STk> (ask singer 'set-talk "My funny valentine, sweet comic valentine")
+okay
+STk> (define preacher (instantiate person 'preacher sproul-plaza))
+preacher
+STk> (ask preacher 'set-talk "Praise the Lord")
+okay
+STk> (define street-person (instantiate person 'harry telegraph-ave))
+"There are tie-dyed shirts as far as you can see..."
+street-person
+STk> (ask street-person 'set-talk "Brother, can you spare a buck")
+okay
+
+STk> (ask Arthur 'go 'west)
+arthur moved from dorm to soda
+appeared
+STk> (ask Arthur 'go 'south)
+
+
+arthur moved from soda to pimentel
+appeared
+STk> (ask Arthur 'go 'south)
+
+arthur moved from pimentel to haas-business-school
+appeared
+STk> (ask Arthur 'go 'west)
+
+arthur moved from haas-business-school to sproul-hall
+"Miles and miles of students are waiting in line..."
+appeared
+
+STk> (ask arthur 'go 'west)
+arthur moved from sproul-hall to sproul-plaza
+"Praise the Lord"
+"My funny valentine, sweet comic valentine"
+appeared
+
+STk> (ask arthur 'go 'south)
+
+arthur moved from sproul-plaza to telegraph-ave
+"There are tie-dyed shirts as far as you can see..."
+"Brother, can you spare a buck"
+appeared
+
+
+Question A4 Part 2
+STk> (define warehouse (instantiate locked-place 'warehouse))
+warehouse
+STk> (define Bob (instantiate person 'Bob Pimentel))
+bob
+STk> (can-go Pimentel 'up warehouse)
+connected
+STk> (ask Bob 'go 'up)
+#f
+STk> (ask warehouse 'unlock) 
+okay
+STk> (ask Bob 'go 'up)
+bob moved from pimentel to warehouse
+appeared
+
+Question A5
+(define my-garage (instantiate garage 'my-garage))
+(define cari (instantiate person 'cari Pimentel))
+(define my-car (instantiate thing 'my-car))
+(ask Pimentel 'appear my-car)
+(ask cari 'take my-car)
+(can-go Pimentel 'up my-garage)
+(ask cari 'go 'up)
+(ask my-garage 'park my-car)
+(ask my-garage 'unpark (car (filter ticket? (ask cari 'possessions))))
+
+
+STk> (define my-garage (instantiate garage 'my-garage))
+my-garage
+STk> (define cari (instantiate person 'cari Noahs))
+cari
+STk> (define my-car (instantiate thing 'my-car))
+my-car
+STk> (ask Noahs 'appear my-car)
+appeared
+STk> (ask cari 'take my-car)
+
+cari took my-car
+taken
+STk> (can-go Noahs 'up my-garage)
+connected
+STk> (ask cari 'go 'up)
+
+cari moved from noahs to my-garage
+appeared
+STk> (ask my-garage 'park my-car)
+
+cari took ticket
+lost
+
+
+Question B3
+STk> (define room (instantiate place 'room))
+room
+STk> (define stolen-goods (instantiate thing 'stolen-goods))
+stolen-goods
+STk> (ask room 'appear stolen-goods)
+appeared
+STk> (define man (instantiate person 'man room))
+man
+STk> (define woman (instantiate person 'woman room))
+woman
+STk> (ask man 'take-all)
+
+man took stolen-goods
+okay
+
+Question B4 - Strength (Continued from B3
+STk> (ask woman 'take stolen-goods)
+
+woman took stolen-goods
+Yaaah! man is upset!
+taken
+STk> (ask woman 'put 'strength 150)
+ok
+STk> (ask man 'put 'strength 125)
+ok
+STk> (ask man 'take stolen-goods)
+
+
+Question B5
+STk> (define home (instantiate hotspot 'lab "password"))
+home
+STk> (can-go home 'up lab)
+connected
+STk> (can-go home 'down room)
+connected
+
+STk> (define my-laptop (instantiate laptop 'HP))
+my-laptop
+STk> (ask room 'appear my-laptop)
+appeared
+STk> (ask man 'take my-laptop)
+
+man took hp
+taken
+STk> (ask man 'go 'up)
+
+man moved from room to home
+appeared
+STk> (ask my-laptop 'surf "Random Test pass")
+Incorrect Password
+STk> (ask my-laptop 'connect "password")
+Connection Successful
+okay
+STk> (ask my-laptop 'surf "www.gmail.com")
+sh: lynx: command not found
+32512
+STk> (ask man 'go 'down)
+
+man moved from home to room
+appeared
+STk> (ask my-laptop 'connect "password")
+#f
+
+
+PART 2 TRANSCRIPT
+Question A6
+
+Transcript for A.6a
+STk> (define bob (instantiate person 'bob Pimentel))
+kevin
+STk> (ask bob 'go-directly-to Soda)
+
+
+bob moved from pimentel to soda
+#t
+STk> (define Andrew (instantiate thief 'Andrew Pimentel))
+andrew
+STk> (ask Andrew 'go-directly-to jail)
+
+
+andrew moved from pimentel to jail
+#t
+STk>
+
+
+Question A6 Part B
+STk> (define kevin (instantiate person 'kevin Pimentel))
+kevin
+STk> (ask kevin 'go-directly-to Soda)
+
+kevin moved from pimentel to soda
+#t
+STk> (define Andrew (instantiate thief 'Andrew Pimentel))
+andrew
+STk> (ask Andrew 'go-directly-to jail)
+
+andrew moved from pimentel to jail
+#t
+STk> (define kevin (instantiate person 'kevin Pimentel))
+kevin
+STk> (define Andrew (instantiate person 'Andrew Pimentel))
+andrew
+STk> (define karina (instantiate thief 'karina Pimentel))
+karina
+STk> (ask karina 'put 'strength 200)
+ok
+STk> (ask kevin 'go-directly-to jail)
+
+
+kevin moved from pimentel to jail
+#t
+STk> (ask karina 'go-directly-to jail)
+
+
+karina moved from pimentel to jail
+#t
+STk> (ask Andrew 'go-directly-to jail)
+
+
+andrew moved from pimentel to jail
+#t
+STk> (define Marissa (instantiate person 'Marissa Pimentel))
+Marissa
+STk> (ask Marissa 'put 'strength 50)
+ok
+STk> (define pizza (instantiate thing 'pizza))
+pizza
+STk> (ask Pimentel 'appear pizza)
+appeared
+STk> (ask Marissa 'take pizza)
+
+Marissa took pizza
+taken
+STk> (ask Marissa 'go-directly-to jail)
+
+
+Marissa moved from pimentel to jail
+#t
+STk> (define zara (instantiate person 'Zara Pimentel))
+zara
+STk> (ask zara 'go-directly-to jail)
+
+zara moved from pimentel to jail
+#t
+STk>
+
+
+
+Question A7 Part A
+STk> (define kevin (instantiate person 'kevin Soda))
+kevin
+STk> (ask kevin 'get-money 50)
+ok
+STk> (ask kevin 'pay-money 100)
+#t
+STk> (ask kevin 'pay-money 75)
+#f
+
+
+Transcript for A.7
+(define-class (bagel) (parent (food 'bagel)))
+(define Noahs (instantiate restaurant 'Noahs bagel 0.50))
+(ask Noahs 'menu)
+(define kevin (instantiate person 'kevin Noahs))
+(ask Noahs 'sell kevin 'bagel)
+(define Amanda (instantiate person 'Amanda Noahs))
+(ask Noahs 'sell Amanda 'coffee)
+(define-class (milk) (parent (food 'milk)))
+(define Peets (instantiate restaurant 'Peets milk 150))
+(define Gary (instantiate person 'Gary Peets))
+(ask Peets 'sell Gary milk)
+
+Transcript for A.8
+(define-class (bagel) (parent (food 'bagel)))
+(define Noahs (instantiate restaurant 'Noahs bagel 0.50))
+(ask Noahs 'menu)
+(define kevin (instantiate person 'kevin Noahs))
+(ask Noahs 'sell kevin 'bagel)
+(ask kevin 'buy 'bagel)
+(define-class (milk) (parent (food 'milk)))
+(ask kevin 'buy 'milk)
+
+
+
+Question B6 Transcript
+
+STk> (define room (instantiate place 'room))
+room
+STk> (ask room 'appear fries)
+appeared
+STk> (ask room 'appear coffee)
+appeared
+STk> (ask room 'appear potstickers)
+appeared
+STk> (define man (instantiate person 'man room))
+man
+STk> (ask man 'strength)
+100
+STk> (ask man 'look-around)
+(potstickers coffee fries)
+STk> (ask man 'take-all)
+*** Error:
+    Bad message to classpossessor
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (let ((method (object message))) (if (method? method) (apply method args) (error "No method " message " in class " (cadr method))))
+  2    (eq? (ask thing (quote possessor)) (quote no-one))
+  3    (cond ((null? l) (quote ())) ((pred (car l)) (cons (car l) (real-filter (cdr l)))) (else (real-filter (cdr l))))
+  4    (cons (car l) (real-filter (cdr l)))
+  5    (cons (car l) (real-filter (cdr l)))
+  6    (for-each (lambda (thing) (ask self (quote take) thing)) (filter (lambda (thing) (eq? (ask thing (quote possessor)) (quote no-one))) (ask place (quote things))))
+STk> (inventory man)
+*** Error:
+    unbound variable: inventory
+Current eval stack:
+__________________
+  0    (inventory man)
+
+STk> (inventory man)
+()
+STk> (ask man 'eat)
+()
+STk> (inventory man)
+()
+STk> (ask man 'look-around)
+(potstickers coffee fries)
+STk> (ask man 'strength)
+100
+STk>
+
+
+Transcript for B.7
+
+STk> (define basement (instantiate place 'basement))
+basement
+STk> (can-go room 'down basement)
+connected
+STk> (can-go basement 'up room)
+connected
+
+STk> (define thiefs (instantiate thief 'thiefs basement))
+thiefs
+STk> (ask man 'take-all)
+*** Error:
+    Bad message to classpossessor
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (let ((method (object message))) (if (method? method) (apply method args) (error "No method " message " in class " (cadr method))))
+  2    (eq? (ask thing (quote possessor)) (quote no-one))
+  3    (cond ((null? l) (quote ())) ((pred (car l)) (cons (car l) (real-filter (cdr l)))) (else (real-filter (cdr l))))
+  4    (cons (car l) (real-filter (cdr l)))
+  5    (cons (car l) (real-filter (cdr l)))
+  6    (for-each (lambda (thing) (ask self (quote take) thing)) (filter (lambda (thing) (eq? (ask thing (quote possessor)) (quote no-one))) (ask place (quote things))))
+STk> (ask man 'go 'down)
+
+
+man moved from room to basement
+appeared
+STk> (inventory man)
+()
+STk> (inventory thiefs)
+()
+
+B8
+(define woman (instantiate person 'woman Soda))
+(define man (instantiate person 'man Soda))
+
+(ask man 'take bagel)
+(ask woman 'take bagel)
+(ask woman 'put 'strength 150)
+(ask woman 'take bagel)
+
+
+Question 9
+STk> (define Noahs (instantiate restaurant 'Noahs bagel 0.50))
+noahs
+STk> (define somepoliceman (instantiate person 'somepoliceman Noahs))
+somepoliceman
+STk> (ask somepoliceman 'money)
+100
+STk> (ask somepoliceman 'buy bagel)
+STk> (ask somepoliceman 'money)
+100
+

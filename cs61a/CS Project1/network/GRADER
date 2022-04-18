@@ -1,0 +1,250 @@
+                                     GRADER
+
+Name of student running submit: Evan Ye
+Login of student running submit: cs61b-wo
+
+Second team member's name: Michael Chen
+Second team member's login: cs61b-vc
+
+Third team member's name (if any): Arthur Liou
+Third team member's login: cs61b-ac
+
+IMPORTANT:  Once you've submitted Project 2 once, the same team member should
+submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
+all the details.  Include a complete list of team members, and let us know
+which submission you want graded.
+
+===============================================================================
+Does your program compile without errors?
+Yes
+
+Have you tested your program on the machines in the Soda CS 61B lab?
+Yes (through autograder)
+
+Did you successfully implement game tree search?  Did you successfully
+implement alpha-beta pruning?  Are there any limitations on it?  What is the
+default number of search levels set by the one-parameter MachinePlayer
+constructor?
+
+Yes
+Yes
+Limitation - cannot search very deep and the recursion is expensive
+Depth = 3
+
+Describe your board evaluation function in some detail.
+
+eval takes a board and a proposed move, and returns a double score that rates how good the move is.
+The eval function works by calculating each players "longest network". "Longest Network" is in quotes because the abstract problem (given a undirected graph with possible cycles, calculate longest path) is actually NP complete. So I proposed an alternative, approximative approach.
+
+Consider the "connectivity" of a node. The connectivity is defined as the number of valid connections it can serve. However valid connections changes in eval, because of the Network direction limitations. Thus connectivity of a node is at most 4 (8 directions / 2). Also, nodes in the end-zone do not get connectivity for having a connection between them (because that is illegal in valid networks). Now, try each piece as a starting piece for a network, and then traverse through its valid connections, always choosing the first, unvisited piece that has highest connectivity.
+
+With the approximated longest network, eval calculates each player's longest network before and after the move. Then, it aggregates the values (my path increase - opponent's path increase) using weights depending on if he is the first player or second player. That is the return value of eval.
+
+Does your MachinePlayer use any special method of choosing the first few moves?
+
+Yes, it will try and grab central squares for the first two moves.
+
+Is there anything else the graders should know to help them read your project?
+
+Apologies - board is a mess.
+
+Describe the classes, modules, and interfaces you designed before and while you
+implemented the project.  Your description should include:
+  -  A list of the classes your program uses.
+  -  A list of each of the "modules" used in or by MachinePlayer, similar to
+     the list in the "Teamwork" section of the README (but hopefully more
+     detailed).
+  -  For each module, list the class(es) the module is implemented in.
+  -  For each module, say which of your team members implemented it.
+  -  For each module, describe its interface--specifically, the prototype and
+     behavior of each method that is available for external callers (outside
+     the module) to call.  Don't include methods that are only meant to be
+     called from within the module.
+
+     For each method, provide (1) a method prototype and (2) a complete,
+     unambiguous description of the behavior of the method/module.  This
+     description should also appear before the method in your code's comments.
+     
+   	1. classes:
+   		Board
+   		Piece
+      		Direction
+      		Best
+   		Interface Evaluation
+   		Interface Searcher
+      Vector<Piece>
+
+    Modules:
+      a) Evaluation (simple interface, no author because no implementation)
+        interface Evaluator
+          /**
+           * Determines how likely the given player is to win in the current board
+           * @param b - current board
+           * @param color - the given player
+           * @return value in (-1.0, 1.0)
+           */
+          public double evaluate(Board b, int color);
+
+        interface Searcher
+          /**
+           * minimax
+           * performs a recursive search on a given board at a specified depth
+           * @param b - the current board to compute minimax on
+           * @param color - the color of the person making a move
+           * @param depth - maximum minimax recursion depth
+           * @return the best Move to be made
+           */
+          public Move search(Board b, int color, int depth);
+
+        b) Game
+            class Board
+            /**
+             * adds a piece of the given color to the board, with coord x and y
+             * @author Evan Ye
+             * @param x,y - coordinates to add the piece to
+             * @param color - of the piece being added
+             */
+            public void addPiece(int x, int y, int color);
+            
+            /**
+             * moves a piece from x0, y0 to x1, y1
+             * @author Evan Ye
+             * @param x0, y0 - from coordinates 
+             * @param x1, y1 - to coordinates
+             */
+            public void movePiece(int x0, int y0, int x1, int y1);
+            
+            /**
+             * removes the piece at the given location
+             * @author Evan Ye
+             * @param x, y - coordinates of which piece to remove
+             */
+            public void removePiece(int x, int y);
+
+            /**
+             * validateMove
+             * checks whether any given move is valid on this board
+             * @author Michael Chen
+             * @param m - the move to be made
+             * @param color - the color for the player making the move
+             * @return true if the move is valid, false otherwise
+             */
+            public boolean validateMove(Move m, int color);
+
+            /**
+             * getValidMoves
+             * @author Michael Chen
+             * gathers a list of moves that are legal on this board
+             * @param color - the color of whose turn it is to make a move
+             * @return all the valid moves for a given position and person's turn
+             */
+            public Vector<Move> getValidMoves(int color);
+
+            /**
+             * doMove makes a move for a player
+             * @author Michael Chen
+             * @param m - move to be made
+             * @param color - color of player making move
+             * @return true if move was successful, false if invalid
+             */
+            public boolean doMove(Move m, int color);
+
+            /**
+              * undoMove takes the last move and undo's its affects
+              * @author Michael Chen
+              * 
+              * IMPORTANT *** can only undo the last move performed. MUST be legal 
+              * @param m - move to be undone
+              */
+              
+              public void undoMove(Move m);
+
+            /**
+             * hasValidNetwork
+             * @author Michael Chen
+             * checks the current board if given player has a winning Network
+             * @param color - color of player to be checked
+             * @return true if color has a network, false otherwise
+             */
+            public boolean hasValidNetwork(int color);
+
+            /**
+             * longestPath
+             * @author Evan Ye
+             * approximates the longest path of a given player in a given board
+             * @param color - color of player to check
+             * @return an int representing their approximate longest network
+             */
+            public int longestPath(int color);
+
+          class Piece
+              private int x,y; //position
+              private int color; //player who played the piece
+              
+              private Vector<Piece> connections; //list of other pieces that it connects to
+                                                //all connections are not necessarily part of a valid network
+          class Direction
+          @author Evan Ye
+              int direction // each cardinal direction is assinged an integer for easy iteration
+              static int getOpposite(int d) ///finds the direction opposite of d;
+
+        c) Vector - class Vector<E> (a custom made ArrayList) 
+          @author Evan Ye
+          public void add(E item)
+          public void insert(int index, E item)
+          public E remove(int index)
+          public E get(int index)
+
+        d) package player
+
+          /**
+           * Best
+           * @author Michael Chen
+           * dummy class to hold a pair of values, Move and its corresponding score
+           * to be used in Minimax search
+           */
+          class Best;
+
+          class MachinePlayer implements Evaluator, Searcher
+            private Board ownBoard; //internal board representation
+            private int color;      //color it is playing
+            private int moveCount;  // how many moves has it made
+            private int searchDepth;// how deep its minimax searches
+            private Move[] goodStartingMoves = {new Move(2,2), new Move(2,5), new Move(5,2), new Move(5,5)}; //good starting moves
+
+            public chooseMove();
+            public opponentMove(Move m);
+            public forceMove(Move m);
+
+            **
+             * evaluate (implements Evaluator)
+             * @author Arthur Liou
+             * given board, player turn, and a move, Machine Player will judge the move
+             * @param player - current player
+             * @param m - move to be judged
+             * @return
+             */
+            public double evaluate(Board b, int player, Move m);
+
+            /**
+             * Search (implements Searcher)
+             * @author Michael Chen
+
+             * performs a minimax recursive search on a given board at a specified depth
+             * @param b - the current board to compute minimax on
+             * @param color - the color of the person making a move
+             * @param depth - maximum minimax recursion depth
+             * @return the best Move to be made
+             */
+            public Move search(Board b, int color, int depth);
+
+            /**
+             * Recursive method to perform minimax
+             * @author Michael Chen
+             * @param b - board to be computed on
+             * @param side - color of person making a move
+             * @param alpha, beta - pruning values
+             * @param depth - depth of recursive search
+             * @return best - the best move,value pair obtainable
+             */
+            private Best search(Board b, int side, double alpha, double beta, int depth);

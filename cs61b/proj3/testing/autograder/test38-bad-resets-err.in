@@ -1,0 +1,62 @@
+> init
+<<<
+D DATE "\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d:\d\d"
+D COMMIT_HEAD "Commit ([a-f0-9]+)[ \t]*\n${DATE}"
+D COMMIT_LOG "(===[ ]*\nCommit [a-f0-9]+[ ]*\n${DATE}[ ]*\n(?:.|\n)*?(?=\Z|\n===))"
+# An arbitrary line of text (works even with ?s)
+D ARBLINE "[^\n]*(?=\n|\Z)"
+# Zero or more arbitrary full lines of text.
+D ARBLINES "(?:(?:.|\n)*(?:\n|\Z)|\A|\Z)"
+D UID "[a-f0-9]+"
+D HEADER "Commit (${UID})"
+# Initialize and add two files.
++ f.txt wug.txt
++ g.txt notwug.txt
+> add g.txt
+<<<
+> add f.txt
+<<<
+# Set up one commit with two files.
+> commit "Two files"
+<<<
+# Various error cases for reset
+# Check reset command.
+> branch other
+<<<
++ h.txt wug2.txt
+> add h.txt
+<<<
+> rm g.txt
+<<<
+> commit "Add h.txt and remove g.txt"
+<<<
+> log
+===
+${HEADER}
+${DATE}
+Add h.txt and remove g.txt
+
+===
+${HEADER}
+${DATE}
+Two files
+
+===
+${HEADER}
+${DATE}
+initial commit
+<<<*
+D INIT "${3}"
+D TWO "${2}"
+D MASTER1 "${1}"
+
+> checkout other
+<<<
+# Almost certain not to exist.
+> reset 025052f2b193d417df998517a4c539918801b430
+No commit with that id exists.
+<<<
++ h.txt wug3.txt
+> reset ${MASTER1}
+There is an untracked file in the way; delete it or add it first.
+<<<

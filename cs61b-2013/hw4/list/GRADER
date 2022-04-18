@@ -1,0 +1,17 @@
+Arthur Liou
+cs61b-AC
+
+
+Part II  (1 point)
+------------------
+Our ADT is not as well protected as we would like.  There are several ways by
+which a hostile (or stupid) application can corrupt our DList (i.e., make it
+violate an invariant) through method calls alone.  Describe one in a text file
+named GRADER (which will be submitted with your code).  You should assume that
+the application is NOT in the list package (which would be a remarkably
+inappropriate place to put an application).
+
+At the top of the GRADER file, include your name and cs61b login ID.
+
+My Answer:
+A possibility is that when a DListNode node, when passed as a parameter to some of the methods, might not ben part of this DList instance.:/

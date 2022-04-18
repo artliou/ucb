@@ -1,0 +1,9 @@
+# Fill this in.
+java -ea loa.Main
+None
+===#1===
+auto black
+auto white
+start
+%bw
+%e

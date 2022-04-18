@@ -1,0 +1,129 @@
+                                     GRADER
+
+Name of student running submit:
+Login of student running submit:
+
+Second team member's name:
+Second team member's login:
+
+Third team member's name (if any):
+Third team member's login:
+
+IMPORTANT:  Once you've submitted Project 2 once, the same team member should
+submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
+all the details.  Include a complete list of team members, and let us know
+which submission you want graded.
+
+If you've submitted your project once, or even written a substantial amount of
+code together, you may not change partners without the permission of the
+instructor.
+===============================================================================
+Does your program compile without errors?
+
+
+Have you tested your program on the machines in the Soda CS 61B lab?
+
+
+Did you successfully implement game tree search?  Did you successfully
+implement alpha-beta pruning?  Are there any limitations on it?  What is the
+default number of search levels set by the one-parameter MachinePlayer
+constructor?
+
+
+Describe your board evaluation function in some detail.
+
+
+Does your MachinePlayer use any special method of choosing the first few moves?
+
+
+Is there anything else the graders should know to help them read your project?
+
+
+
+Describe the classes, modules, and interfaces you designed before and while you
+implemented the project.  Your description should include:
+  -  A list of the classes your program uses.
+  -  A list of each of the "modules" used in or by MachinePlayer, similar to
+     the list in the "Teamwork" section of the README (but hopefully more
+     detailed).
+  -  For each module, list the class(es) the module is implemented in.
+  -  For each module, say which of your team members implemented it.
+  -  For each module, describe its interface--specifically, the prototype and
+     behavior of each method that is available for external callers (outside
+     the module) to call.  Don't include methods that are only meant to be
+     called from within the module.
+
+     For each method, provide (1) a method prototype and (2) a complete,
+     unambiguous description of the behavior of the method/module.  This
+     description should also appear before the method in your code's comments.
+     
+   	1. classes:
+   		Board
+   		Piece
+   		MoveValidator
+   		Eval
+   		Minimax
+      Vector<
+
+    Modules:
+      a) Evaluation
+        interface Evaluator
+          /**
+           * Determines how likely the given player is to win in the current board
+           * @param b - current board
+           * @param color - the given player
+           * @return value in (-1.0, 1.0)
+           */
+          public double evaluate(Board b, int color);
+
+        interface Searcher
+          /**
+           * minimax
+           * performs a recursive search on a given board at a specified depth
+           * @param b - the current board to compute minimax on
+           * @param color - the color of the person making a move
+           * @param depth - maximum minimax recursion depth
+           * @return the best Move to be made
+           */
+          public Move search(Board b, int color, int depth);
+
+        b) Game
+            class Board
+            /**
+             * adds a piece of the given color to the board, with coord x and y
+             * @param x,y - coordinates to add the piece to
+             * @param color - of the piece being added
+             */
+            public void addPiece(int x, int y, int color);
+            
+            /**
+             * moves a piece from x0, y0 to x1, y1
+             * @param x0, y0 - from coordinates 
+             * @param x1, y1 - to coordinates
+             */
+            public void movePiece(int x0, int y0, int x1, int y1);
+            
+            /**
+             * removes the piece at the given location
+             * @param x, y - coordinates of which piece to remove
+             */
+            public void removePiece(int x, int y);
+
+          class Piece
+              private int x,y; //position
+              private int color; //player who played the piece
+              
+              private Vector<Piece> connections; //list of other pieces that it connects to
+                                                //all connections are not necessarily part of a valid network
+
+        c) Vector - class Vector<E> (a custom made ArrayList) //pretty self explanatory
+          public void add(E item)
+          public void insert(int index, E item)
+          public E remove(int index)
+          public E get(int index)
+
+
+You will probably need to change some of your design decisions as you go; be
+sure to modify this file to reflect these changes before you submit your
+project.  Your design of classes and interfaces with be worth about 10% of your
+grade.
